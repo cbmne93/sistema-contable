@@ -42,6 +42,14 @@ function findCuentaPadreId({
     return null;
 }
 
+function getPrismaErrorMessage(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+
+    return "Error desconocido.";
+}
+
 export async function createPlanCuentasBaseAction() {
     try {
         const empresaId = await getEmpresaActivaIdOrThrow();
@@ -62,46 +70,52 @@ export async function createPlanCuentasBaseAction() {
 
         const cuentasPorNivel = new Map<number, string>();
 
-        await prisma.$transaction(async (tx) => {
-            for (const item of PLAN_CUENTAS_BASE) {
-                const cuentaPadreId = findCuentaPadreId({
-                    item,
-                    cuentasPorNivel,
-                });
+        await prisma.$transaction(
+            async (tx) => {
+                for (const item of PLAN_CUENTAS_BASE) {
+                    const cuentaPadreId = findCuentaPadreId({
+                        item,
+                        cuentasPorNivel,
+                    });
 
-                const cuenta = await tx.cuentaContable.create({
-                    data: {
-                        empresaId,
-                        cuentaPadreId,
+                    const cuenta = await tx.cuentaContable.create({
+                        data: {
+                            empresaId,
+                            cuentaPadreId,
 
-                        codigo: item.codigo,
-                        nombre: item.nombre,
-                        descripcion: null,
+                            codigo: item.codigo,
+                            nombre: item.nombre,
+                            descripcion: null,
 
-                        tipo: getTipoCuenta(item.codigo),
-                        naturaleza: getNaturalezaCuenta(item.naturaleza),
+                            tipo: getTipoCuenta(item.codigo),
+                            naturaleza: getNaturalezaCuenta(item.naturaleza),
 
-                        nivel: item.nivel,
-                        aceptaMovimiento: item.aceptaAsiento === "S",
+                            nivel: item.nivel,
+                            aceptaMovimiento: item.aceptaAsiento === "S",
 
-                        moneda: getMonedaCuenta(item.moneda),
-                        requiereAjusteCambio:
-                            item.requiereAjusteCambio === "S",
+                            moneda: getMonedaCuenta(item.moneda),
+                            requiereAjusteCambio:
+                                item.requiereAjusteCambio === "S",
 
-                        estado: "ACTIVO",
-                    },
-                    select: {
-                        id: true,
-                    },
-                });
+                            estado: "ACTIVO",
+                        },
+                        select: {
+                            id: true,
+                        },
+                    });
 
-                cuentasPorNivel.set(item.nivel, cuenta.id);
+                    cuentasPorNivel.set(item.nivel, cuenta.id);
 
-                for (let nivel = item.nivel + 1; nivel <= 10; nivel++) {
-                    cuentasPorNivel.delete(nivel);
+                    for (let nivel = item.nivel + 1; nivel <= 10; nivel++) {
+                        cuentasPorNivel.delete(nivel);
+                    }
                 }
+            },
+            {
+                maxWait: 10000,
+                timeout: 30000,
             }
-        });
+        );
 
         revalidatePath("/plan-cuentas");
 
@@ -112,11 +126,25 @@ export async function createPlanCuentasBaseAction() {
     } catch (error) {
         console.error("Error al cargar plan de cuentas base:", error);
 
-        if (error instanceof Error && error.message.includes("empresa activa")) {
+        const errorMessage = getPrismaErrorMessage(error);
+
+        if (errorMessage.includes("empresa activa")) {
             return {
                 ok: false,
                 message:
                     "Debe seleccionar una empresa activa antes de cargar el plan de cuentas.",
+            };
+        }
+
+        if (
+            errorMessage.includes("expired transaction") ||
+            errorMessage.includes("Transaction API error") ||
+            errorMessage.includes("P2028")
+        ) {
+            return {
+                ok: false,
+                message:
+                    "La carga del plan tardó más de lo esperado. Intente nuevamente.",
             };
         }
 
