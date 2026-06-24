@@ -1,0 +1,1 @@
+export * from "./asiento-contable.validation";

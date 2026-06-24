@@ -1,0 +1,57 @@
+Listado de rutas de carpetas
+El número de serie del volumen es 00000291 5033:C924
+C:\USERS\USUARIO\DESKTOP\NEXT_JS\SISTEMA-CONTABLE\PRISMA
+|   schema.prisma
+|   seed.ts
+|   
+\---migrations
+    |   migration_lock.toml
+    |   
+    +---20260614233313_init
+    |       migration.sql
+    |       
+    +---20260615001606_add_base_accounting_models
+    |       migration.sql
+    |       
+    +---20260615002300_add_multiempresa_base
+    |       migration.sql
+    |       
+    +---20260615185036_add_unique_cliente_nombre_por_empresa
+    |       migration.sql
+    |       
+    +---20260615235047_add_unique_proveedor_nombre_por_empresa
+    |       migration.sql
+    |       
+    +---20260616000620_add_unique_sucursal_nombre_por_empresa
+    |       migration.sql
+    |       
+    +---20260616124800_update_timbrados_origen
+    |       migration.sql
+    |       
+    +---20260616232015_add_estado_comprobante
+    |       migration.sql
+    |       
+    +---20260617142258_add_periodos_fiscales
+    |       migration.sql
+    |       
+    +---20260618110323_update_contabilidad_base
+    |       migration.sql
+    |       
+    +---20260619131515_add_configuracion_contable
+    |       migration.sql
+    |       
+    +---20260619160826_simplify_configuracion_contable
+    |       migration.sql
+    |       
+    +---20260619182658_add_generar_asientos_automaticos
+    |       migration.sql
+    |       
+    +---20260623163615_add_obligaciones_e_imputaciones
+    |       migration.sql
+    |       
+    +---20260623220908_add_marangatu_registros
+    |       migration.sql
+    |       
+    \---20260623230317_ajustar_marangatu_correlativo_por_tipo
+            migration.sql
+            

@@ -1,0 +1,698 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RolUsuario {
+  ADMIN
+  CONTADOR
+  USUARIO
+}
+
+enum RolEmpresa {
+  ADMIN_EMPRESA
+  CONTADOR
+  OPERADOR
+  LECTURA
+}
+
+enum EstadoRegistro {
+  ACTIVO
+  INACTIVO
+}
+
+enum EstadoPeriodoFiscal {
+  ABIERTO
+  CERRADO
+}
+
+enum TipoDocumento {
+  RUC
+  CEDULA_IDENTIDAD
+  PASAPORTE
+  DOCUMENTO_EXTRANJERO
+}
+
+enum TipoPersona {
+  FISICA
+  JURIDICA
+}
+
+enum TipoMovimiento {
+  INGRESO
+  EGRESO
+}
+
+enum TipoComprobante {
+  FACTURA
+  NOTA_CREDITO
+  NOTA_DEBITO
+  RECIBO
+  AUTOFACTURA
+  TICKET
+  OTRO
+}
+
+enum OrigenTimbrado {
+  PROPIO
+  PROVEEDOR
+}
+
+enum CondicionComprobante {
+  CONTADO
+  CREDITO
+}
+
+enum TipoImpuesto {
+  EXENTA
+  IVA_5
+  IVA_10
+}
+
+enum EstadoComprobante {
+  BORRADOR
+  EMITIDO
+  ANULADO
+}
+
+enum TipoCuentaContable {
+  ACTIVO
+  PASIVO
+  PATRIMONIO
+  INGRESO
+  EGRESO
+}
+
+enum NaturalezaCuentaContable {
+  DEUDORA
+  ACREEDORA
+}
+
+enum MonedaCuentaContable {
+  LOCAL
+  EXTRANJERA
+}
+
+enum EstadoAsientoContable {
+  BORRADOR
+  CONFIRMADO
+  ANULADO
+}
+
+enum OrigenAsientoContable {
+  MANUAL
+  VENTA
+  COMPRA
+  AJUSTE
+  CIERRE
+  APERTURA
+}
+
+enum TipoInformeMarangatu {
+  TODOS
+  COMPRAS
+  VENTAS
+  EGRESOS
+  INGRESOS
+}
+
+enum EstadoMarangatuRegistro {
+  GENERADO
+  ANULADO
+}
+
+enum TipoRegistroMarangatu {
+  VENTA
+  COMPRA
+  INGRESO
+  EGRESO
+}
+
+enum FormatoArchivoMarangatu {
+  ZIP_CSV
+  ZIP_TXT
+  EXCEL
+}
+
+model Usuario {
+  id       String     @id @default(uuid())
+  nombre   String
+  email    String     @unique
+  password String
+  rol      RolUsuario @default(USUARIO)
+  activo   Boolean    @default(true)
+
+  empresas UsuarioEmpresa[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Empresa {
+  id             String         @id @default(uuid())
+  razonSocial    String
+  nombreFantasia String?
+  ruc            String         @unique
+  dv             String
+  direccion      String?
+  telefono       String?
+  email          String?
+  estado         EstadoRegistro @default(ACTIVO)
+
+  obligacionIvaGeneral   Boolean @default(true)
+  obligacionIrpServicios Boolean @default(false)
+  obligacionIrpCapital   Boolean @default(false)
+  obligacionIreGeneral   Boolean @default(false)
+  obligacionIreSimple    Boolean @default(false)
+  obligacionIreResimple  Boolean @default(false)
+  obligacionIdu          Boolean @default(false)
+  obligacionInr          Boolean @default(false)
+
+  usuarios              UsuarioEmpresa[]
+  sucursales            Sucursal[]
+  timbrados             Timbrado[]
+  clientes              Cliente[]
+  proveedores           Proveedor[]
+  cuentas               CuentaContable[]
+  comprobantes          Comprobante[]
+  asientos              AsientoContable[]
+  periodosFiscales      PeriodoFiscal[]
+  configuracionContable ConfiguracionContable?
+  marangatuRegistros    MarangatuRegistro[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UsuarioEmpresa {
+  id        String     @id @default(uuid())
+  usuarioId String
+  empresaId String
+  rol       RolEmpresa @default(OPERADOR)
+  activo    Boolean    @default(true)
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id])
+  empresa Empresa @relation(fields: [empresaId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([usuarioId, empresaId])
+  @@index([usuarioId])
+  @@index([empresaId])
+}
+
+model PeriodoFiscal {
+  id        String @id @default(uuid())
+  empresaId String
+
+  anio        Int
+  descripcion String
+  fechaInicio DateTime
+  fechaFin    DateTime
+  estado      EstadoPeriodoFiscal @default(ABIERTO)
+
+  empresa            Empresa             @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  asientos           AsientoContable[]
+  marangatuRegistros MarangatuRegistro[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([empresaId, anio])
+  @@index([empresaId])
+  @@index([estado])
+}
+
+model Sucursal {
+  id        String @id @default(uuid())
+  empresaId String
+
+  codigo    String
+  nombre    String
+  direccion String?
+  telefono  String?
+  estado    EstadoRegistro @default(ACTIVO)
+
+  empresa      Empresa           @relation(fields: [empresaId], references: [id])
+  timbrados    Timbrado[]
+  comprobantes Comprobante[]
+  asientos     AsientoContable[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([empresaId, codigo])
+  @@unique([empresaId, nombre])
+  @@index([empresaId])
+}
+
+model Timbrado {
+  id          String  @id @default(uuid())
+  empresaId   String
+  sucursalId  String?
+  proveedorId String?
+
+  origen          OrigenTimbrado
+  tipoComprobante TipoComprobante
+
+  numero   String
+  fechaFin DateTime?
+
+  establecimiento String?
+  puntoExpedicion String?
+
+  numeroDesde  Int?
+  numeroHasta  Int?
+  numeroActual Int?
+
+  estado EstadoRegistro @default(ACTIVO)
+
+  empresa      Empresa       @relation(fields: [empresaId], references: [id])
+  sucursal     Sucursal?     @relation(fields: [sucursalId], references: [id])
+  proveedor    Proveedor?    @relation(fields: [proveedorId], references: [id])
+  comprobantes Comprobante[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([empresaId, origen, numero, tipoComprobante, sucursalId, proveedorId])
+  @@index([empresaId])
+  @@index([sucursalId])
+  @@index([proveedorId])
+  @@index([origen])
+}
+
+model Cliente {
+  id        String @id @default(uuid())
+  empresaId String
+
+  nombre          String
+  tipoDocumento   TipoDocumento  @default(RUC)
+  numeroDocumento String
+  dv              String?
+  tipoPersona     TipoPersona    @default(JURIDICA)
+  direccion       String?
+  telefono        String?
+  email           String?
+  estado          EstadoRegistro @default(ACTIVO)
+
+  empresa      Empresa       @relation(fields: [empresaId], references: [id])
+  comprobantes Comprobante[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([empresaId, tipoDocumento, numeroDocumento])
+  @@unique([empresaId, nombre])
+  @@index([empresaId])
+}
+
+model Proveedor {
+  id        String @id @default(uuid())
+  empresaId String
+
+  nombre          String
+  tipoDocumento   TipoDocumento  @default(RUC)
+  numeroDocumento String
+  dv              String?
+  tipoPersona     TipoPersona    @default(JURIDICA)
+  direccion       String?
+  telefono        String?
+  email           String?
+  estado          EstadoRegistro @default(ACTIVO)
+
+  empresa      Empresa       @relation(fields: [empresaId], references: [id])
+  comprobantes Comprobante[]
+  timbrados    Timbrado[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([empresaId, tipoDocumento, numeroDocumento])
+  @@unique([empresaId, nombre])
+  @@index([empresaId])
+}
+
+model CuentaContable {
+  id        String @id @default(uuid())
+  empresaId String
+
+  cuentaPadreId String?
+
+  codigo      String
+  nombre      String
+  descripcion String?
+
+  tipo       TipoCuentaContable
+  naturaleza NaturalezaCuentaContable
+
+  nivel            Int
+  aceptaMovimiento Boolean @default(false)
+
+  moneda               MonedaCuentaContable @default(LOCAL)
+  requiereAjusteCambio Boolean              @default(false)
+
+  estado EstadoRegistro @default(ACTIVO)
+
+  empresa Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+
+  cuentaPadre CuentaContable?  @relation("CuentaPadre", fields: [cuentaPadreId], references: [id], onDelete: SetNull)
+  subCuentas  CuentaContable[] @relation("CuentaPadre")
+
+  detallesComprobante ComprobanteDetalle[]
+  detallesAsiento     AsientoDetalle[]
+
+  configuracionCuentaClientes    ConfiguracionContable[] @relation("ConfiguracionCuentaClientes")
+  configuracionCuentaProveedores ConfiguracionContable[] @relation("ConfiguracionCuentaProveedores")
+
+  configuracionCuentaCaja  ConfiguracionContable[] @relation("ConfiguracionCuentaCaja")
+  configuracionCuentaBanco ConfiguracionContable[] @relation("ConfiguracionCuentaBanco")
+
+  configuracionCuentaIvaDebitoFiscal5  ConfiguracionContable[] @relation("ConfiguracionCuentaIvaDebitoFiscal5")
+  configuracionCuentaIvaDebitoFiscal10 ConfiguracionContable[] @relation("ConfiguracionCuentaIvaDebitoFiscal10")
+
+  configuracionCuentaIvaCreditoFiscal5  ConfiguracionContable[] @relation("ConfiguracionCuentaIvaCreditoFiscal5")
+  configuracionCuentaIvaCreditoFiscal10 ConfiguracionContable[] @relation("ConfiguracionCuentaIvaCreditoFiscal10")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([empresaId, codigo])
+  @@index([empresaId])
+  @@index([cuentaPadreId])
+  @@index([tipo])
+  @@index([estado])
+}
+
+model ConfiguracionContable {
+  id        String @id @default(uuid())
+  empresaId String @unique
+
+  generarAsientosAutomaticos Boolean @default(false)
+
+  cuentaClientesId    String?
+  cuentaProveedoresId String?
+
+  cuentaCajaId  String?
+  cuentaBancoId String?
+
+  cuentaIvaDebitoFiscal5Id  String?
+  cuentaIvaDebitoFiscal10Id String?
+
+  cuentaIvaCreditoFiscal5Id  String?
+  cuentaIvaCreditoFiscal10Id String?
+
+  empresa Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+
+  cuentaClientes    CuentaContable? @relation("ConfiguracionCuentaClientes", fields: [cuentaClientesId], references: [id])
+  cuentaProveedores CuentaContable? @relation("ConfiguracionCuentaProveedores", fields: [cuentaProveedoresId], references: [id])
+
+  cuentaCaja  CuentaContable? @relation("ConfiguracionCuentaCaja", fields: [cuentaCajaId], references: [id])
+  cuentaBanco CuentaContable? @relation("ConfiguracionCuentaBanco", fields: [cuentaBancoId], references: [id])
+
+  cuentaIvaDebitoFiscal5  CuentaContable? @relation("ConfiguracionCuentaIvaDebitoFiscal5", fields: [cuentaIvaDebitoFiscal5Id], references: [id])
+  cuentaIvaDebitoFiscal10 CuentaContable? @relation("ConfiguracionCuentaIvaDebitoFiscal10", fields: [cuentaIvaDebitoFiscal10Id], references: [id])
+
+  cuentaIvaCreditoFiscal5  CuentaContable? @relation("ConfiguracionCuentaIvaCreditoFiscal5", fields: [cuentaIvaCreditoFiscal5Id], references: [id])
+  cuentaIvaCreditoFiscal10 CuentaContable? @relation("ConfiguracionCuentaIvaCreditoFiscal10", fields: [cuentaIvaCreditoFiscal10Id], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([empresaId])
+  @@index([cuentaClientesId])
+  @@index([cuentaProveedoresId])
+  @@index([cuentaCajaId])
+  @@index([cuentaBancoId])
+  @@index([cuentaIvaDebitoFiscal5Id])
+  @@index([cuentaIvaDebitoFiscal10Id])
+  @@index([cuentaIvaCreditoFiscal5Id])
+  @@index([cuentaIvaCreditoFiscal10Id])
+}
+
+model Comprobante {
+  id         String @id @default(uuid())
+  empresaId  String
+  sucursalId String
+
+  tipoMovimiento  TipoMovimiento
+  tipoComprobante TipoComprobante
+  condicion       CondicionComprobante @default(CONTADO)
+  estado          EstadoComprobante    @default(EMITIDO)
+
+  clienteId   String?
+  proveedorId String?
+  timbradoId  String?
+
+  numeroTimbrado    String?
+  establecimiento   String?
+  puntoExpedicion   String?
+  numeroComprobante String
+
+  fechaEmision     DateTime
+  fechaVencimiento DateTime?
+
+  moneda     String  @default("PYG")
+  cotizacion Decimal @default(1) @db.Decimal(18, 2)
+
+  exenta    Decimal @default(0) @db.Decimal(18, 2)
+  gravada5  Decimal @default(0) @db.Decimal(18, 2)
+  iva5      Decimal @default(0) @db.Decimal(18, 2)
+  gravada10 Decimal @default(0) @db.Decimal(18, 2)
+  iva10     Decimal @default(0) @db.Decimal(18, 2)
+  total     Decimal @default(0) @db.Decimal(18, 2)
+
+  imputaIva    Boolean @default(true)
+  imputaIre    Boolean @default(false)
+  imputaIrpRsp Boolean @default(false)
+  noImputa     Boolean @default(false)
+
+  concepto String?
+
+  cdc         String?
+  estadoSifen String?
+  xmlUrl      String?
+  kudeUrl     String?
+  qrUrl       String?
+
+  empresa   Empresa    @relation(fields: [empresaId], references: [id])
+  sucursal  Sucursal   @relation(fields: [sucursalId], references: [id])
+  cliente   Cliente?   @relation(fields: [clienteId], references: [id])
+  proveedor Proveedor? @relation(fields: [proveedorId], references: [id])
+  timbrado  Timbrado?  @relation(fields: [timbradoId], references: [id])
+
+  detalles          ComprobanteDetalle[]
+  asiento           AsientoContable?
+  marangatuDetalles MarangatuRegistroDetalle[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([empresaId, tipoMovimiento, tipoComprobante, establecimiento, puntoExpedicion, numeroComprobante])
+  @@index([empresaId])
+  @@index([sucursalId])
+  @@index([clienteId])
+  @@index([proveedorId])
+  @@index([timbradoId])
+  @@index([fechaEmision])
+}
+
+model ComprobanteDetalle {
+  id               String  @id @default(uuid())
+  comprobanteId    String
+  cuentaContableId String?
+
+  descripcion    String
+  tipoImpuesto   TipoImpuesto
+  cantidad       Decimal      @default(1) @db.Decimal(18, 2)
+  precioUnitario Decimal      @default(0) @db.Decimal(18, 2)
+
+  exenta    Decimal @default(0) @db.Decimal(18, 2)
+  gravada5  Decimal @default(0) @db.Decimal(18, 2)
+  iva5      Decimal @default(0) @db.Decimal(18, 2)
+  gravada10 Decimal @default(0) @db.Decimal(18, 2)
+  iva10     Decimal @default(0) @db.Decimal(18, 2)
+  total     Decimal @default(0) @db.Decimal(18, 2)
+
+  comprobante    Comprobante     @relation(fields: [comprobanteId], references: [id], onDelete: Cascade)
+  cuentaContable CuentaContable? @relation(fields: [cuentaContableId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([comprobanteId])
+  @@index([cuentaContableId])
+}
+
+model AsientoContable {
+  id        String @id @default(uuid())
+  empresaId String
+
+  periodoFiscalId String
+  sucursalId      String?
+  comprobanteId   String? @unique
+
+  numero Int
+  fecha  DateTime
+
+  concepto String
+
+  origen OrigenAsientoContable @default(MANUAL)
+  estado EstadoAsientoContable @default(BORRADOR)
+
+  totalDebe  Decimal @default(0) @db.Decimal(18, 2)
+  totalHaber Decimal @default(0) @db.Decimal(18, 2)
+
+  empresa       Empresa       @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  periodoFiscal PeriodoFiscal @relation(fields: [periodoFiscalId], references: [id])
+  sucursal      Sucursal?     @relation(fields: [sucursalId], references: [id])
+  comprobante   Comprobante?  @relation(fields: [comprobanteId], references: [id])
+
+  detalles AsientoDetalle[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([empresaId, periodoFiscalId, numero])
+  @@index([empresaId])
+  @@index([periodoFiscalId])
+  @@index([sucursalId])
+  @@index([fecha])
+  @@index([origen])
+  @@index([estado])
+}
+
+model AsientoDetalle {
+  id               String @id @default(uuid())
+  asientoId        String
+  cuentaContableId String
+
+  descripcion String?
+
+  debe  Decimal @default(0) @db.Decimal(18, 2)
+  haber Decimal @default(0) @db.Decimal(18, 2)
+
+  asiento        AsientoContable @relation(fields: [asientoId], references: [id], onDelete: Cascade)
+  cuentaContable CuentaContable  @relation(fields: [cuentaContableId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([asientoId])
+  @@index([cuentaContableId])
+}
+
+model MarangatuRegistro {
+  id        String @id @default(uuid())
+  empresaId String
+
+  periodoFiscalId String
+
+  codigo  String
+  version Int
+
+  anio Int
+  mes  Int
+
+  tipoInforme TipoInformeMarangatu
+  estado      EstadoMarangatuRegistro @default(GENERADO)
+
+  registrosCompra  Int @default(0)
+  registrosVenta   Int @default(0)
+  registrosEgreso  Int @default(0)
+  registrosIngreso Int @default(0)
+
+  fechaGeneracion DateTime  @default(now())
+  fechaAnulacion  DateTime?
+  motivoAnulacion String?
+
+  empresa       Empresa       @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  periodoFiscal PeriodoFiscal @relation(fields: [periodoFiscalId], references: [id])
+
+  detalles MarangatuRegistroDetalle[]
+  archivos MarangatuRegistroArchivo[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([empresaId, codigo])
+  @@unique([empresaId, anio, mes, tipoInforme, version])
+  @@index([empresaId])
+  @@index([periodoFiscalId])
+  @@index([anio, mes])
+  @@index([tipoInforme])
+  @@index([estado])
+}
+
+model MarangatuRegistroDetalle {
+  id         String @id @default(uuid())
+  registroId String
+
+  comprobanteId String?
+
+  tipoRegistro TipoRegistroMarangatu
+  numeroLinea  Int
+
+  fechaEmision DateTime?
+
+  tipoDocumentoCodigo String?
+  numeroDocumento     String?
+  nombrePersona       String?
+
+  tipoComprobanteCodigo String?
+  numeroTimbrado        String?
+  numeroComprobante     String?
+
+  gravada10 Decimal @default(0) @db.Decimal(18, 2)
+  gravada5  Decimal @default(0) @db.Decimal(18, 2)
+  exenta    Decimal @default(0) @db.Decimal(18, 2)
+  total     Decimal @default(0) @db.Decimal(18, 2)
+
+  condicionCodigo  String?
+  monedaExtranjera Boolean @default(false)
+
+  imputaIva    Boolean @default(false)
+  imputaIre    Boolean @default(false)
+  imputaIrpRsp Boolean @default(false)
+  noImputa     Boolean @default(false)
+
+  numeroComprobanteAsociado String?
+  timbradoAsociado          String?
+
+  lineaCsv String @db.Text
+  lineaTxt String @db.Text
+
+  registro    MarangatuRegistro @relation(fields: [registroId], references: [id], onDelete: Cascade)
+  comprobante Comprobante?      @relation(fields: [comprobanteId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@unique([registroId, numeroLinea])
+  @@index([registroId])
+  @@index([comprobanteId])
+  @@index([tipoRegistro])
+}
+
+model MarangatuRegistroArchivo {
+  id         String @id @default(uuid())
+  registroId String
+
+  formato FormatoArchivoMarangatu
+
+  nombreArchivo   String
+  mimeType        String
+  contenidoBase64 String @db.Text
+  sizeBytes       Int    @default(0)
+
+  registro MarangatuRegistro @relation(fields: [registroId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([registroId])
+  @@index([formato])
+}

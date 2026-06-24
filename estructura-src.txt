@@ -1,0 +1,634 @@
+Listado de rutas de carpetas
+El número de serie del volumen es 00000219 5033:C924
+C:\USERS\USUARIO\DESKTOP\NEXT_JS\SISTEMA-CONTABLE\SRC
+|   proxy.ts
+|   
++---app
+|   |   favicon.ico
+|   |   globals.css
+|   |   layout.tsx
+|   |   page.tsx
+|   |   
+|   +---(auth)
+|   |   \---login
+|   |           page.tsx
+|   |           
+|   +---(dashboard)
+|   |   |   layout.tsx
+|   |   |   
+|   |   +---asientos-contables
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   +---nuevo
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   \---[id]
+|   |   |       |   page.tsx
+|   |   |       |   
+|   |   |       \---editar
+|   |   |               page.tsx
+|   |   |               
+|   |   +---clientes
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   +---nuevo
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   \---[id]
+|   |   |       \---editar
+|   |   |               page.tsx
+|   |   |               
+|   |   +---configuracion-contable
+|   |   |       page.tsx
+|   |   |       
+|   |   +---dashboard
+|   |   |       page.tsx
+|   |   |       
+|   |   +---empresas
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   +---nueva
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   \---[id]
+|   |   |       \---editar
+|   |   |               page.tsx
+|   |   |               
+|   |   +---facturas-compra
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   +---nueva
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   \---[id]
+|   |   |       |   page.tsx
+|   |   |       |   
+|   |   |       \---editar
+|   |   |               page.tsx
+|   |   |               
+|   |   +---facturas-venta
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   +---nueva
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   \---[id]
+|   |   |       |   page.tsx
+|   |   |       |   
+|   |   |       \---editar
+|   |   |               page.tsx
+|   |   |               
+|   |   +---periodos-fiscales
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   \---nuevo
+|   |   |           page.tsx
+|   |   |           
+|   |   +---plan-cuentas
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   +---nueva
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   \---[id]
+|   |   |       \---editar
+|   |   |               page.tsx
+|   |   |               
+|   |   +---proveedores
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   +---nuevo
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   \---[id]
+|   |   |       \---editar
+|   |   |               page.tsx
+|   |   |               
+|   |   +---reportes
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   +---libro-compras
+|   |   |   |   |   page.tsx
+|   |   |   |   |   
+|   |   |   |   +---excel
+|   |   |   |   |       route.ts
+|   |   |   |   |       
+|   |   |   |   \---pdf
+|   |   |   |           route.ts
+|   |   |   |           
+|   |   |   +---libro-ventas
+|   |   |   |   |   page.tsx
+|   |   |   |   |   
+|   |   |   |   +---excel
+|   |   |   |   |       route.ts
+|   |   |   |   |       
+|   |   |   |   \---pdf
+|   |   |   |           route.ts
+|   |   |   |           
+|   |   |   \---marangatu
+|   |   |       |   page.tsx
+|   |   |       |   
+|   |   |       \---[id]
+|   |   |           |   page.tsx
+|   |   |           |   
+|   |   |           +---zip-csv
+|   |   |           |       route.ts
+|   |   |           |       
+|   |   |           \---zip-txt
+|   |   |                   route.ts
+|   |   |                   
+|   |   +---sucursales
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   +---nueva
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   \---[id]
+|   |   |       \---editar
+|   |   |               page.tsx
+|   |   |               
+|   |   \---timbrados
+|   |       |   page.tsx
+|   |       |   
+|   |       +---nuevo
+|   |       |       page.tsx
+|   |       |       
+|   |       \---[id]
+|   |           \---editar
+|   |                   page.tsx
+|   |                   
+|   +---api
+|   |   \---auth
+|   |       \---[...nextauth]
+|   |               route.ts
+|   |               
+|   +---crear-empresa
+|   |       page.tsx
+|   |       
+|   \---seleccionar-empresa
+|           page.tsx
+|           
++---components
+|   +---layout
+|   |   |   AppHeader.tsx
+|   |   |   AppSidebar.tsx
+|   |   |   LogoutButton.tsx
+|   |   |   
+|   |   \---sidebar
+|   |           app-sidebar.constants.ts
+|   |           index.ts
+|   |           SidebarHeader.tsx
+|   |           SidebarNavItem.tsx
+|   |           SidebarSection.tsx
+|   |           
+|   +---shared
+|   |       CuentaContableCombobox.tsx
+|   |       index.ts
+|   |       MonthFilter.tsx
+|   |       Pagination.tsx
+|   |       SearchInput.tsx
+|   |       
+|   \---ui
+|           alert-dialog.tsx
+|           badge.tsx
+|           button.tsx
+|           card.tsx
+|           dropdown-menu.tsx
+|           input.tsx
+|           label.tsx
+|           select.tsx
+|           separator.tsx
+|           sonner.tsx
+|           table.tsx
+|           textarea.tsx
+|           
++---features
+|   +---asientos-contables
+|   |   +---actions
+|   |   |       create-asiento-contable.action.ts
+|   |   |       delete-asiento-contable.action.ts
+|   |   |       get-asiento-contable-by-id.action.ts
+|   |   |       get-asiento-contable-form-by-id.action.ts
+|   |   |       get-asiento-contable-form-options.action.ts
+|   |   |       get-asientos-contables.action.ts
+|   |   |       index.ts
+|   |   |       update-asiento-contable.action.ts
+|   |   |       
+|   |   +---components
+|   |   |       AsientoContableActions.tsx
+|   |   |       AsientoContableDatos.tsx
+|   |   |       AsientoContableDetalle.tsx
+|   |   |       AsientoContableDetalleView.tsx
+|   |   |       AsientoContableForm.tsx
+|   |   |       AsientoContableTotales.tsx
+|   |   |       AsientosContablesTable.tsx
+|   |   |       DeleteAsientoContableButton.tsx
+|   |   |       index.ts
+|   |   |       
+|   |   +---helpers
+|   |   |       generar-asiento-compra.helper.ts
+|   |   |       generar-asiento-venta.helper.ts
+|   |   |       index.ts
+|   |   |       
+|   |   +---interfaces
+|   |   |       asiento-contable-form.interface.ts
+|   |   |       asiento-contable.interface.ts
+|   |   |       index.ts
+|   |   |       
+|   |   +---utils
+|   |   |       asiento-contable-form.utils.ts
+|   |   |       index.ts
+|   |   |       
+|   |   \---validations
+|   |           asiento-contable.validation.ts
+|   |           index.ts
+|   |           
+|   +---auth
+|   |   \---actions
+|   |           logout.action.ts
+|   |           
+|   +---clientes
+|   |   +---actions
+|   |   |       create-cliente.action.ts
+|   |   |       delete-cliente.action.ts
+|   |   |       get-cliente-by-id.action.ts
+|   |   |       get-clientes.action.ts
+|   |   |       index.ts
+|   |   |       update-cliente.action.ts
+|   |   |       
+|   |   +---components
+|   |   |       ClienteCombobox.tsx
+|   |   |       ClienteForm.tsx
+|   |   |       ClientesTable.tsx
+|   |   |       DeleteClienteButton.tsx
+|   |   |       index.ts
+|   |   |       
+|   |   +---interfaces
+|   |   |       cliente.interface.ts
+|   |   |       index.ts
+|   |   |       
+|   |   \---validations
+|   |           cliente.validation.ts
+|   |           index.ts
+|   |           
+|   +---comprobantes
+|   |   +---components
+|   |   |       ComprobanteAsientoAlert.tsx
+|   |   |       ComprobanteField.tsx
+|   |   |       ComprobanteImputacionResumen.tsx
+|   |   |       ComprobanteImputacionTributaria.tsx
+|   |   |       ComprobanteInfoCard.tsx
+|   |   |       ComprobanteTotalesCard.tsx
+|   |   |       index.ts
+|   |   |       
+|   |   \---helpers
+|   |           comprobante-calculos.helper.ts
+|   |           comprobante-fechas.helper.ts
+|   |           comprobante-formatters.helper.ts
+|   |           comprobante-validaciones-generales.helper.ts
+|   |           index.ts
+|   |           validar-comprobante-sin-asiento.helper.ts
+|   |           validar-cuentas-contables-detalles.helper.ts
+|   |           
+|   +---configuracion-contable
+|   |   +---actions
+|   |   |       get-configuracion-contable.action.ts
+|   |   |       index.ts
+|   |   |       update-configuracion-contable.action.ts
+|   |   |       
+|   |   +---components
+|   |   |       ConfiguracionContableCuentaSelect.tsx
+|   |   |       ConfiguracionContableForm.tsx
+|   |   |       index.ts
+|   |   |       
+|   |   +---interfaces
+|   |   |       configuracion-contable.interface.ts
+|   |   |       index.ts
+|   |   |       
+|   |   \---validations
+|   |           configuracion-contable.validation.ts
+|   |           index.ts
+|   |           
+|   +---empresas
+|   |   +---actions
+|   |   |       clear-empresa-activa.action.ts
+|   |   |       create-empresa.action.ts
+|   |   |       delete-empresa.action.ts
+|   |   |       get-empresa-activa-id.action.ts
+|   |   |       get-empresa-activa.action.ts
+|   |   |       get-empresa-by-id.action.ts
+|   |   |       get-empresas.action.ts
+|   |   |       index.ts
+|   |   |       set-empresa-activa.action.ts
+|   |   |       update-empresa.action.ts
+|   |   |       
+|   |   +---components
+|   |   |       AutoSeleccionarEmpresa.tsx
+|   |   |       CambiarEmpresaButton.tsx
+|   |   |       DeleteEmpresaButton.tsx
+|   |   |       EmpresaActivaBadge.tsx
+|   |   |       EmpresaForm.tsx
+|   |   |       EmpresaObligacionesTributarias.tsx
+|   |   |       EmpresaSelector.tsx
+|   |   |       EmpresasTable.tsx
+|   |   |       index.ts
+|   |   |       SeleccionarEmpresaForm.tsx
+|   |   |       
+|   |   +---helpers
+|   |   |       get-empresa-activa-id-safe.helper.ts
+|   |   |       get-empresa-activa-id.helper.ts
+|   |   |       index.ts
+|   |   |       
+|   |   +---interfaces
+|   |   |       empresa.interface.ts
+|   |   |       index.ts
+|   |   |       
+|   |   \---validations
+|   |           empresa.validation.ts
+|   |           index.ts
+|   |           
+|   +---facturas-compra
+|   |   +---actions
+|   |   |       create-factura-compra.action.ts
+|   |   |       delete-factura-compra.action.ts
+|   |   |       get-factura-compra-by-id.action.ts
+|   |   |       get-factura-compra-form-options.action.ts
+|   |   |       get-facturas-compra.action.ts
+|   |   |       index.ts
+|   |   |       update-factura-compra.action.ts
+|   |   |       
+|   |   +---components
+|   |   |       DeleteFacturaCompraButton.tsx
+|   |   |       FacturaCompraActions.tsx
+|   |   |       FacturaCompraDatosGenerales.tsx
+|   |   |       FacturaCompraDetalle.tsx
+|   |   |       FacturaCompraDetalleTable.tsx
+|   |   |       FacturaCompraForm.tsx
+|   |   |       FacturaCompraTotales.tsx
+|   |   |       FacturasCompraTable.tsx
+|   |   |       index.ts
+|   |   |       
+|   |   +---interfaces
+|   |   |       factura-compra-form-options.interface.ts
+|   |   |       factura-compra.interface.ts
+|   |   |       index.ts
+|   |   |       
+|   |   +---utils
+|   |   |       factura-compra-calculos.ts
+|   |   |       index.ts
+|   |   |       
+|   |   \---validations
+|   |           factura-compra.validation.ts
+|   |           index.ts
+|   |           
+|   +---facturas-venta
+|   |   +---actions
+|   |   |       anular-factura-venta.action.ts
+|   |   |       create-factura-venta.action.ts
+|   |   |       get-factura-venta-by-id.action.ts
+|   |   |       get-factura-venta-form-options.action.ts
+|   |   |       get-facturas-venta.action.ts
+|   |   |       index.ts
+|   |   |       update-factura-venta.action.ts
+|   |   |       
+|   |   +---components
+|   |   |       AnularFacturaVentaButton.tsx
+|   |   |       FacturasVentaTable.tsx
+|   |   |       FacturaVentaDatosGenerales.tsx
+|   |   |       FacturaVentaDetalle.tsx
+|   |   |       FacturaVentaDetalleTable.tsx
+|   |   |       FacturaVentaForm.tsx
+|   |   |       FacturaVentaTotales.tsx
+|   |   |       index.ts
+|   |   |       
+|   |   +---interfaces
+|   |   |       factura-venta-form-options.interface.ts
+|   |   |       factura-venta.interface.ts
+|   |   |       index.ts
+|   |   |       
+|   |   +---utils
+|   |   |       factura-calculos.ts
+|   |   |       
+|   |   \---validations
+|   |           factura-venta.validation.ts
+|   |           index.ts
+|   |           
+|   +---periodos-fiscales
+|   |   +---actions
+|   |   |       create-periodo-fiscal.action.ts
+|   |   |       get-periodos-fiscales.action.ts
+|   |   |       index.ts
+|   |   |       set-periodo-fiscal-activo.action.ts
+|   |   |       
+|   |   \---helpers
+|   |           get-periodo-fiscal-activo.helper.ts
+|   |           index.ts
+|   |           
+|   +---plan-cuentas
+|   |   +---actions
+|   |   |       create-cuenta-contable.action.ts
+|   |   |       create-plan-cuentas-base.action.ts
+|   |   |       delete-cuenta-contable.action.ts
+|   |   |       get-cuenta-contable-by-id.action.ts
+|   |   |       get-cuenta-contable-form-options.action.ts
+|   |   |       get-cuentas-contables.action.ts
+|   |   |       index.ts
+|   |   |       toggle-cuenta-contable-estado.action.ts
+|   |   |       update-cuenta-contable.action.ts
+|   |   |       
+|   |   +---components
+|   |   |       CreatePlanCuentasBaseButton.tsx
+|   |   |       CuentaContableActions.tsx
+|   |   |       CuentaContableDatos.tsx
+|   |   |       CuentaContableForm.tsx
+|   |   |       DeleteCuentaContableButton.tsx
+|   |   |       index.ts
+|   |   |       PlanCuentasTable.tsx
+|   |   |       ToggleCuentaContableEstadoButton.tsx
+|   |   |       
+|   |   +---data
+|   |   |       index.ts
+|   |   |       plan-cuentas-base.ts
+|   |   |       
+|   |   +---interfaces
+|   |   |       cuenta-contable.interface.ts
+|   |   |       index.ts
+|   |   |       
+|   |   +---utils
+|   |   |       cuenta-contable-form.utils.ts
+|   |   |       cuenta-contable-nombre.utils.ts
+|   |   |       index.ts
+|   |   |       
+|   |   \---validations
+|   |           cuenta-contable.validation.ts
+|   |           index.ts
+|   |           
+|   +---proveedores
+|   |   +---actions
+|   |   |       create-proveedor.action.ts
+|   |   |       delete-proveedor.action.ts
+|   |   |       get-proveedor-by-id.action.ts
+|   |   |       get-proveedores.action.ts
+|   |   |       index.ts
+|   |   |       update-proveedor.action.ts
+|   |   |       
+|   |   +---components
+|   |   |       DeleteProveedorButton.tsx
+|   |   |       index.ts
+|   |   |       ProveedorCombobox.tsx
+|   |   |       ProveedoresTable.tsx
+|   |   |       ProveedorForm.tsx
+|   |   |       
+|   |   +---interfaces
+|   |   |       index.ts
+|   |   |       proveedor.interface.ts
+|   |   |       
+|   |   \---validations
+|   |           index.ts
+|   |           proveedor.validation.ts
+|   |           
+|   +---reportes
+|   |   +---helpers
+|   |   |       index.ts
+|   |   |       reportes-page.helper.ts
+|   |   |       
+|   |   +---libro-compras
+|   |   |   +---actions
+|   |   |   |       get-libro-compras.action.ts
+|   |   |   |       index.ts
+|   |   |   |       
+|   |   |   \---components
+|   |   |           index.ts
+|   |   |           LibroComprasFilters.tsx
+|   |   |           LibroComprasResumen.tsx
+|   |   |           LibroComprasTable.tsx
+|   |   |           
+|   |   +---libro-ventas
+|   |   |   +---actions
+|   |   |   |       get-libro-ventas.action.ts
+|   |   |   |       index.ts
+|   |   |   |       
+|   |   |   \---components
+|   |   |           index.ts
+|   |   |           LibroVentasFilters.tsx
+|   |   |           LibroVentasResumen.tsx
+|   |   |           LibroVentasTable.tsx
+|   |   |           
+|   |   +---marangatu
+|   |   |   +---actions
+|   |   |   |       anular-marangatu-registro.action.ts
+|   |   |   |       delete-marangatu-registro.action.ts
+|   |   |   |       generar-marangatu-registro.action.ts
+|   |   |   |       get-marangatu-registro-by-id.action.ts
+|   |   |   |       get-marangatu-registros.action.ts
+|   |   |   |       index.ts
+|   |   |   |       
+|   |   |   +---components
+|   |   |   |       AnularMarangatuRegistroButton.tsx
+|   |   |   |       DeleteMarangatuRegistroButton.tsx
+|   |   |   |       index.ts
+|   |   |   |       MarangatuGenerarForm.tsx
+|   |   |   |       MarangatuRegistrosTable.tsx
+|   |   |   |       
+|   |   |   \---helpers
+|   |   |           index.ts
+|   |   |           marangatu-archivo.helper.ts
+|   |   |           marangatu-registro.helper.ts
+|   |   |           
+|   |   \---pdf
+|   |           create-report-pdf.helper.ts
+|   |           index.ts
+|   |           
+|   +---sucursales
+|   |   +---actions
+|   |   |       create-sucursal.action.ts
+|   |   |       delete-sucursal.action.ts
+|   |   |       get-sucursal-by-id.action.ts
+|   |   |       get-sucursales.action.ts
+|   |   |       index.ts
+|   |   |       update-sucursal.action.ts
+|   |   |       
+|   |   +---components
+|   |   |       DeleteSucursalButton.tsx
+|   |   |       index.ts
+|   |   |       SucursalesTable.tsx
+|   |   |       SucursalForm.tsx
+|   |   |       
+|   |   +---interfaces
+|   |   |       index.ts
+|   |   |       sucursal.interface.ts
+|   |   |       
+|   |   \---validations
+|   |           index.ts
+|   |           sucursal.validation.ts
+|   |           
+|   \---timbrados
+|       +---actions
+|       |       create-timbrado.action.ts
+|       |       delete-timbrado.action.ts
+|       |       get-timbrado-by-id.action.ts
+|       |       get-timbrado-form-options.action.ts
+|       |       get-timbrados.action.ts
+|       |       index.ts
+|       |       update-timbrado.action.ts
+|       |       
+|       +---components
+|       |       DeleteTimbradoButton.tsx
+|       |       index.ts
+|       |       TimbradoForm.tsx
+|       |       TimbradosTable.tsx
+|       |       TimbradosTableActions.tsx
+|       |       TimbradosTableBadges.tsx
+|       |       TimbradosTableEmpty.tsx
+|       |       
+|       +---helpers
+|       |       index.ts
+|       |       timbrado-formatters.helper.ts
+|       |       
+|       +---interfaces
+|       |       index.ts
+|       |       timbrado.interface.ts
+|       |       
+|       \---validations
+|               index.ts
+|               timbrado.validation.ts
+|               
++---generated
+|   \---prisma
+|       |   browser.ts
+|       |   client.ts
+|       |   commonInputTypes.ts
+|       |   enums.ts
+|       |   models.ts
+|       |   
+|       +---internal
+|       |       class.ts
+|       |       prismaNamespace.ts
+|       |       prismaNamespaceBrowser.ts
+|       |       
+|       \---models
+|               AsientoContable.ts
+|               AsientoDetalle.ts
+|               Cliente.ts
+|               Comprobante.ts
+|               ComprobanteDetalle.ts
+|               ConfiguracionContable.ts
+|               CuentaContable.ts
+|               Empresa.ts
+|               MarangatuRegistro.ts
+|               MarangatuRegistroArchivo.ts
+|               MarangatuRegistroDetalle.ts
+|               PeriodoFiscal.ts
+|               Proveedor.ts
+|               Sucursal.ts
+|               Timbrado.ts
+|               Usuario.ts
+|               UsuarioEmpresa.ts
+|               
++---lib
+|       prisma.ts
+|       utils.ts
+|       
+\---types
+        next-auth.d.ts
+        

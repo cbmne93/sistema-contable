@@ -1,0 +1,1 @@
+export type { Empresa, CreateEmpresaInput, UpdateEmpresaInput } from "./empresa.interface";
